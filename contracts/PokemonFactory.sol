@@ -38,9 +38,10 @@ contract PokemonFactory {
 
     mapping(uint => address) public pokemonToOwner;
     mapping(address => uint) ownerPokemonCount;
-    
+
     mapping(uint => Hability[]) public habilities;
     mapping(uint => Type[]) public types;
+    mapping(uint => Type[]) public weaknesses;
 
     event eventNewPokemon(Pokemon);
 
@@ -63,6 +64,10 @@ contract PokemonFactory {
 
     function addType(uint _pokemonId, Type _type) public {
         types[_pokemonId].push(_type);
+    }
+
+    function addWeakness(uint _pokemonId, Type _type) public {
+        weaknesses[_pokemonId].push(_type);
     }
 
     function addHability(
