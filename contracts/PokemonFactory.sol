@@ -8,6 +8,27 @@ contract PokemonFactory {
         string description;
     }
 
+    enum Type {
+        Normal,
+        Fire,
+        Water,
+        Grass,
+        Fighting,
+        Flying,
+        Electric,
+        Steel,
+        Dragon,
+        Dark,
+        Psychic,
+        Ghost,
+        Poison,
+        Ground,
+        Rock,
+        Bug,
+        Ice,
+        Fairy
+    }
+
     struct Pokemon {
         uint id;
         string name;
@@ -17,15 +38,13 @@ contract PokemonFactory {
 
     mapping(uint => address) public pokemonToOwner;
     mapping(address => uint) ownerPokemonCount;
-
-    mapping(uint => Hability[]) habilities;
+    
+    mapping(uint => Hability[]) public habilities;
+    mapping(uint => Type[]) public types;
 
     event eventNewPokemon(Pokemon);
 
-    function createPokemon(
-        string memory _name,
-        uint _id
-    ) public {
+    function createPokemon(string memory _name, uint _id) public {
         require(_id > 0, "Pokemon's Id must be greater than 0");
         bytes memory name = bytes(_name);
         require(
@@ -42,9 +61,16 @@ contract PokemonFactory {
         emit eventNewPokemon(pokemon);
     }
 
-    function addHability(uint _pokemonId,string memory _habilityName,string memory _habilityDescription)public {
-        Hability memory hability = Hability(_habilityName,_habilityDescription);
-        habilities[_pokemonId].push(hability);
+    function addType(uint _pokemonId, Type _type) public {
+        types[_pokemonId].push(_type);
+    }
+
+    function addHability(
+        uint _pokemonId,
+        string memory _name,
+        string memory _description
+    ) public {
+        habilities[_pokemonId].push(Hability(_name, _description));
     }
 
     function getAllPokemons() public view returns (Pokemon[] memory) {
