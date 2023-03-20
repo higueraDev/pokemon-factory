@@ -56,8 +56,8 @@ contract PokemonFactory {
         Pokemon memory pokemon = Pokemon(_id, _name);
 
         pokemons.push(pokemon);
-        pokemonToOwner[_id] = msg.sender;
-        ownerPokemonCount[msg.sender]++;
+        // pokemonToOwner[_id] = msg.sender;
+        // ownerPokemonCount[msg.sender]++;
 
         emit eventNewPokemon(pokemon);
     }
