@@ -19,7 +19,7 @@ contract PokemonFactory {
     function createPokemon(string memory _name, uint _id) public {
         require(_id > 0, "Pokemon's Id must be greater than 0");
         bytes memory name = bytes(_name);
-        require(name.length > 2, "Pokemon's Name can't be empty");
+        require(name.length > 2, "Pokemon's Name should be greater than 2 characters");
 
         pokemons.push(Pokemon(_id, _name));
         pokemonToOwner[_id] = msg.sender;
