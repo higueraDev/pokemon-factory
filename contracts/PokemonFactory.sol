@@ -3,6 +3,10 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract PokemonFactory {
+    struct Hability {
+        string name;
+        string description;
+    }
 
     struct Pokemon {
         uint id;
@@ -14,18 +18,33 @@ contract PokemonFactory {
     mapping(uint => address) public pokemonToOwner;
     mapping(address => uint) ownerPokemonCount;
 
+    mapping(uint => Hability[]) habilities;
+
     event eventNewPokemon(Pokemon);
 
-    function createPokemon(string memory _name, uint _id) public {
+    function createPokemon(
+        string memory _name,
+        uint _id
+    ) public {
         require(_id > 0, "Pokemon's Id must be greater than 0");
         bytes memory name = bytes(_name);
-        require(name.length > 2, "Pokemon's Name should be greater than 2 characters");
+        require(
+            name.length > 2,
+            "Pokemon's Name should be greater than 2 characters"
+        );
 
-        pokemons.push(Pokemon(_id, _name));
+        Pokemon memory pokemon = Pokemon(_id, _name);
+
+        pokemons.push(pokemon);
         pokemonToOwner[_id] = msg.sender;
         ownerPokemonCount[msg.sender]++;
-        
-        emit eventNewPokemon(Pokemon(_id, _name));
+
+        emit eventNewPokemon(pokemon);
+    }
+
+    function addHability(uint _pokemonId,string memory _habilityName,string memory _habilityDescription)public {
+        Hability memory hability = Hability(_habilityName,_habilityDescription);
+        habilities[_pokemonId].push(hability);
     }
 
     function getAllPokemons() public view returns (Pokemon[] memory) {
